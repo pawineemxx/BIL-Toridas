@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toridas น้ำหนักน่องไก่</title>
+<style>
+:root{
+  --bg:#F1F4F1; --panel:#FFFFFF; --ink:#152420; --sub:#5C6D66;
+  --line:#D7DED8; --accent:#C67A2E; --accent2:#2F6F62; --bad:#B4483C;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#121714; --panel:#1B211D; --ink:#EAF0EA; --sub:#93A69C; --line:#2C3630; --accent:#E0923D; --accent2:#5FA994; --bad:#E07267; }
+}
+:root[data-theme="dark"]{ --bg:#121714; --panel:#1B211D; --ink:#EAF0EA; --sub:#93A69C; --line:#2C3630; --accent:#E0923D; --accent2:#5FA994; --bad:#E07267; }
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Sarabun,Tahoma,sans-serif;min-height:100%}
+header{padding:18px 16px 0;max-width:960px;margin:0 auto}
+h1{font-size:20px;margin:0 0 2px;font-weight:700}
+p.lede{color:var(--sub);margin:0 0 14px;font-size:13px}
+nav{display:flex;gap:6px;border-bottom:1px solid var(--line);max-width:960px;margin:0 auto;padding:0 16px}
+nav button{background:none;border:none;padding:10px 14px;font-size:14px;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;font-weight:600}
+nav button.active{color:var(--accent);border-color:var(--accent)}
+main{max-width:960px;margin:0 auto;padding:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:12px;color:var(--sub);font-weight:600}
+input,select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:8px 10px;color:var(--ink);font-size:14px;font-family:inherit}
+textarea{width:100%;min-height:70px;resize:vertical;font-family:ui-monospace,monospace;font-size:12.5px}
+button.btn{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer}
+button.btn.secondary{background:transparent;color:var(--accent2);border:1px solid var(--accent2)}
+button.btn.small{padding:6px 12px;font-size:13px}
+button.btn.ghost{background:transparent;color:var(--sub);border:1px solid var(--line);padding:5px 10px;font-size:12px}
+button.btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad);padding:5px 10px;font-size:12px}
+.loopgrid{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+.loopcard{border:1px solid var(--line);border-radius:8px;padding:12px}
+.loopcard h4{margin:0 0 8px;font-size:14px}
+.sidewrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+@media (max-width:640px){.sidewrap{grid-template-columns:1fr}}
+.qe-input-row{display:flex;gap:6px}
+.qe-input{flex:1;font-size:20px;padding:10px;text-align:center}
+.qe-meta{display:flex;justify-content:space-between;align-items:center;margin:6px 0;font-size:12px;color:var(--sub)}
+.qe-count{font-weight:700;color:var(--sub)}
+.qe-count.ok{color:var(--accent2)}
+.qe-chips{display:flex;flex-wrap:wrap;gap:4px;max-height:110px;overflow-y:auto}
+.chip{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:2px 8px;font-size:11.5px}
+.bulk-toggle{background:none;border:none;color:var(--accent2);font-size:12px;cursor:pointer;padding:4px 0}
+.bulk-box{display:none;margin-top:6px}
+.bulk-box.open{display:block}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{padding:5px 7px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--sub);font-weight:600;font-size:11.5px}
+.bar{background:var(--line);border-radius:3px;height:8px;position:relative;overflow:hidden;width:60px;display:inline-block;vertical-align:middle;margin-right:5px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent2);border-radius:3px}
+.scroll{overflow-x:auto}
+.list-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+.list-row:last-child{border-bottom:none}
+.muted{color:var(--sub);font-size:12px}
+.pillrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pillrow button{background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:6px 12px;border-radius:20px;font-size:12.5px;cursor:pointer}
+.pillrow button.active{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+.empty{color:var(--sub);font-size:13px;padding:20px 0;text-align:center}
+h3{font-size:14px;margin:0 0 8px}
+h4.sub{font-size:12.5px;color:var(--sub);margin:0 0 6px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.two-col{grid-template-columns:1fr}}
+.donut-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:640px){.donut-row{grid-template-columns:1fr}}
+.donut-wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.donut{width:110px;height:110px;border-radius:50%;position:relative;flex:none}
+.donut::after{content:"";position:absolute;inset:20px;background:var(--panel);border-radius:50%}
+.donut-legend{display:flex;flex-direction:column;gap:3px;font-size:11px;flex:1;min-width:110px}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-swatch{width:9px;height:9px;border-radius:2px;flex:none}
+.slider-row{display:flex;flex-direction:column;gap:2px}
+.slider-row input[type=range]{width:100%;accent-color:var(--accent2)}
+.slider-label{display:flex;justify-content:space-between;font-size:12px;color:var(--sub)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Toridas — บันทึกน้ำหนักน่องไก่</h1>
+  <p class="lede">พิมพ์น้ำหนักแล้วกด Enter ทีละค่า — ดูสรุปในแดชบอร์ดโดยเลื่อนเลือกช่วงน้ำหนักไก่เป็น (กก.) ข้อมูลเก็บใน Google Sheets ใช้ร่วมกันได้ทุกเครื่อง</p>
+  <p class="muted" id="storage-note" style="margin:-4px 0 12px">กำลังเชื่อมต่อ...</p>
+</header>
+<nav>
+  <button class="tab-btn active" data-tab="entry">กรอกข้อมูล</button>
+  <button class="tab-btn" data-tab="dash">แดชบอร์ด</button>
+</nav>
+<main>
+
+<section id="tab-entry">
+  <div class="card">
+    <div class="row">
+      <div class="field"><label>น้ำหนักไก่เป็น (กก.)</label>
+        <input type="number" step="0.01" inputmode="decimal" id="f-avgweight" placeholder="เช่น 2.37"></div>
+      <div class="field"><label>จำนวนลูปวันนี้</label>
+        <select id="f-loopcount"><option value="3">3 ลูป</option><option value="4" selected>4 ลูป</option></select>
+      </div>
+    </div>
+    <div class="loopgrid" id="loopgrid"></div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" id="save-batch">บันทึกชุดข้อมูล</button>
+      <span class="muted" id="save-msg"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>ชุดข้อมูลที่บันทึกไว้</h3>
+    <div id="batch-list"></div>
+  </div>
+</section>
+
+<section id="tab-dash" style="display:none">
+  <div class="card">
+    <label style="display:block;margin-bottom:10px">เลื่อนเลือกช่วงน้ำหนักไก่เป็น (กก.)</label>
+    <div class="row" style="gap:20px">
+      <div class="field" style="flex:1;min-width:160px">
+        <div class="slider-row">
+          <div class="slider-label"><span>ตั้งแต่</span><span id="d-from-label"></span></div>
+          <input type="range" id="d-from">
+        </div>
+      </div>
+      <div class="field" style="flex:1;min-width:160px">
+        <div class="slider-row">
+          <div class="slider-label"><span>ถึง</span><span id="d-to-label"></span></div>
+          <input type="range" id="d-to">
+        </div>
+      </div>
+      <button class="btn secondary" id="d-refresh">รีเฟรชตอนนี้</button>
+      <button class="btn ghost" id="d-clear">รีเซ็ต</button>
+    </div>
+    <div class="muted" style="margin-top:8px" id="d-status"></div>
+  </div>
+
+  <div class="card">
+    <h3>1. รวมทุกลูป — % เข้าไซส์ (ละเอียดทีละ 10 กรัม)</h3>
+    <div class="scroll" id="combined-table"></div>
+    <h4 class="sub" style="margin-top:14px">สัดส่วนช่วงกว้าง ทีละ 50 กรัม (รวมทุกลูป)</h4>
+    <div class="donut-row">
+      <div><div class="muted" style="margin-bottom:6px">ข้างซ้าย</div><div id="donut-combined-L"></div></div>
+      <div><div class="muted" style="margin-bottom:6px">ข้างขวา</div><div id="donut-combined-R"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2. แยกตามลูป</h3>
+    <div class="pillrow" id="loop-pills"></div>
+    <h4 class="sub">ละเอียดทีละ 10 กรัม</h4>
+    <div class="scroll" id="loop-fine-table"></div>
+    <h4 class="sub" style="margin-top:14px">สัดส่วนช่วงกว้าง ทีละ 50 กรัม</h4>
+    <div class="donut-row">
+      <div><div class="muted" style="margin-bottom:6px">ข้างซ้าย</div><div id="donut-L"></div></div>
+      <div><div class="muted" style="margin-bottom:6px">ข้างขวา</div><div id="donut-R"></div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+const STORE_KEY = "toridas_batches_v3";
+// ตั้งค่าตรงนี้: วาง URL เว็บแอป Google Apps Script ที่ deploy แล้ว (ลงท้ายด้วย /exec)
+const API_URL = "https://script.google.com/macros/s/AKfycbwu58jBWdnwcYQF_NNN2dDllkm_cJJCPCGKpsMpwLO9Q7HKF-P4BYPfVn9yLdnBGhIjtQ/exec";
+
+let batches = [];
+let activeLoop = null;
+let filterFrom = null, filterTo = null;
+let formState = {};
+const isConfigured = API_URL && API_URL.indexOf("PASTE_") !== 0;
+
+function loadLocal(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); }catch(e){ return []; } }
+function saveLocal(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(batches)); }catch(e){} }
+function parseNums(text){
+  return text.split(/[\s,;]+/).map(s=>s.trim()).filter(Boolean).map(Number).filter(n=>!isNaN(n));
+}
+
+// ---- storage: Google Sheets (via Apps Script Web App) with localStorage fallback ----
+async function initStorage(){
+  const note = document.getElementById("storage-note");
+  if(!isConfigured){
+    batches = loadLocal();
+    note.textContent = "ยังไม่ได้ตั้งค่า API_URL — ใช้โหมดทดสอบในเครื่องนี้ไปก่อน (ดูวิธีตั้งค่าท้ายไฟล์)";
+    renderBatchList();
+    return;
+  }
+  await fetchBatches();
+  setInterval(fetchBatches, 20000);
+}
+async function fetchBatches(){
+  const note = document.getElementById("storage-note");
+  try{
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    batches = data.batches || [];
+    note.textContent = "เชื่อมต่อ Google Sheets แล้ว — ข้อมูลซิงก์ทุกเครื่อง (รีเฟรชอัตโนมัติทุก 20 วินาที)";
+    renderBatchList();
+    if(document.getElementById("tab-dash").style.display !== "none") renderStats();
+  }catch(e){
+    note.textContent = "เชื่อมต่อ Google Sheets ไม่ได้ — ตรวจสอบ API_URL หรืออินเทอร์เน็ต";
+  }
+}
+async function addBatch(record){
+  if(!isConfigured){
+    record.id = Date.now();
+    batches.push(record);
+    saveLocal();
+    renderBatchList();
+    return;
+  }
+  await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type": "text/plain;charset=utf-8"},
+    body: JSON.stringify(Object.assign({action:"add"}, record))
+  });
+  await fetchBatches();
+}
+async function deleteBatch(id){
+  if(!isConfigured){
+    batches = batches.filter(x=>x.id!==id);
+    saveLocal();
+    renderBatchList();
+    return;
+  }
+  await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type": "text/plain;charset=utf-8"},
+    body: JSON.stringify({action:"delete", id:id})
+  });
+  await fetchBatches();
+}
+
+document.querySelectorAll(".tab-btn").forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById("tab-entry").style.display = b.dataset.tab==="entry" ? "" : "none";
+    document.getElementById("tab-dash").style.display = b.dataset.tab==="dash" ? "" : "none";
+    if(b.dataset.tab==="dash"){ initWeightSliders(); renderStats(); }
+  };
+});
+
+// ---- quick-entry widget ----
+function makeQuickEntry(container, loopIdx, side){
+  container.innerHTML = `
+    <div class="qe-input-row">
+      <input type="number" inputmode="decimal" class="qe-input" placeholder="น้ำหนัก (g)">
+      <button class="btn small qe-add">เพิ่ม</button>
+    </div>
+    <div class="qe-meta"><span class="qe-count">0/50</span>
+      <span><button class="btn ghost qe-undo">ลบล่าสุด</button> <button class="btn ghost qe-clear">ล้าง</button></span>
+    </div>
+    <div class="qe-chips"></div>
+    <button class="bulk-toggle">+ วางข้อมูลหลายค่าพร้อมกัน</button>
+    <div class="bulk-box">
+      <textarea placeholder="วางตัวเลขคั่นด้วยช่องว่าง/คอมมา/บรรทัดใหม่"></textarea>
+      <button class="btn secondary small" style="margin-top:6px" type="button">เพิ่มจากข้อความนี้</button>
+    </div>`;
+  const input = container.querySelector(".qe-input");
+  const countEl = container.querySelector(".qe-count");
+  const chipsEl = container.querySelector(".qe-chips");
+  const arr = formState.loops[loopIdx][side];
+  function rerender(){
+    countEl.textContent = arr.length + "/50";
+    countEl.className = "qe-count " + (arr.length===50 ? "ok" : "");
+    chipsEl.innerHTML = arr.map(v=>`<span class="chip">${v}</span>`).join("");
+    chipsEl.scrollTop = chipsEl.scrollHeight;
+  }
+  function addVal(){
+    const v = parseFloat(input.value);
+    if(!isNaN(v)){ arr.push(v); input.value=""; rerender(); }
+    input.focus();
+  }
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); addVal(); } });
+  container.querySelector(".qe-add").onclick = addVal;
+  container.querySelector(".qe-undo").onclick = ()=>{ arr.pop(); rerender(); };
+  container.querySelector(".qe-clear").onclick = ()=>{ arr.length=0; rerender(); };
+  container.querySelector(".bulk-toggle").onclick = (e)=>{
+    e.preventDefault();
+    container.querySelector(".bulk-box").classList.toggle("open");
+  };
+  container.querySelector(".bulk-box button").onclick = ()=>{
+    const ta = container.querySelector(".bulk-box textarea");
+    parseNums(ta.value).forEach(v=>arr.push(v));
+    ta.value = ""; rerender();
+  };
+  rerender();
+}
+
+// ---- entry form ----
+function buildLoopInputs(){
+  const n = parseInt(document.getElementById("f-loopcount").value,10);
+  formState = { loopCount:n, loops:{} };
+  for(let i=1;i<=n;i++) formState.loops[i] = { L:[], R:[] };
+  const grid = document.getElementById("loopgrid");
+  grid.innerHTML = "";
+  for(let i=1;i<=n;i++){
+    const div = document.createElement("div");
+    div.className = "loopcard";
+    div.innerHTML = `<h4>ลูป ${i}</h4>
+      <div class="sidewrap">
+        <div><label>ข้างซ้าย</label><div class="qe-L"></div></div>
+        <div><label>ข้างขวา</label><div class="qe-R"></div></div>
+      </div>`;
+    grid.appendChild(div);
+    makeQuickEntry(div.querySelector(".qe-L"), i, "L");
+    makeQuickEntry(div.querySelector(".qe-R"), i, "R");
+  }
+}
+document.getElementById("f-loopcount").onchange = buildLoopInputs;
+buildLoopInputs();
+
+document.getElementById("save-batch").onclick = async ()=>{
+  const msg = document.getElementById("save-msg");
+  const awEl = document.getElementById("f-avgweight");
+  const avgWeight = awEl.value ? parseFloat(awEl.value) : null;
+  const loops = {}; let total = 0;
+  for(const k in formState.loops){
+    const l = formState.loops[k];
+    loops[k] = { L:[...l.L], R:[...l.R] };
+    total += l.L.length + l.R.length;
+  }
+  if(total===0){ msg.textContent = "ยังไม่มีข้อมูลน้ำหนักให้บันทึก"; msg.style.color="var(--bad)"; return; }
+  msg.textContent = "กำลังบันทึก..."; msg.style.color="var(--sub)";
+  try{
+    await addBatch({ date: new Date().toISOString().slice(0,10), avgWeight, loopCount: formState.loopCount, loops });
+    msg.textContent = `บันทึกแล้ว (${total} ค่า)`; msg.style.color="var(--accent2)";
+  }catch(e){
+    msg.textContent = "บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง"; msg.style.color="var(--bad)";
+  }
+  awEl.value = "";
+  buildLoopInputs();
+};
+
+function renderBatchList(){
+  const wrap = document.getElementById("batch-list");
+  if(batches.length===0){ wrap.innerHTML = '<div class="empty">ยังไม่มีชุดข้อมูล</div>'; return; }
+  wrap.innerHTML = "";
+  [...batches].sort((a,b)=>b.id-a.id).forEach(b=>{
+    let total=0;
+    for(const k in b.loops){ total += b.loops[k].L.length + b.loops[k].R.length; }
+    const wlabel = b.avgWeight!=null ? `น้ำหนักไก่เป็นเฉลี่ย ${b.avgWeight} kg` : "ไม่ระบุน้ำหนัก";
+    const row = document.createElement("div");
+    row.className = "list-row";
+    row.innerHTML = `<span>${b.date} — ${b.loopCount} ลูป — ${total} ค่า<br><span class="muted">${wlabel}</span></span>`;
+    const del = document.createElement("button");
+    del.className = "btn danger"; del.textContent = "ลบ";
+    del.onclick = ()=>{ deleteBatch(b.id); };
+    row.appendChild(del);
+    wrap.appendChild(row);
+  });
+}
+initStorage();
+
+// ---- binning ----
+const FINE_BINS = (()=>{
+  const bins=[{label:"<100", lo:-Infinity, hi:100}];
+  for(let lo=101; lo<=591; lo+=10) bins.push({label:`${lo}-${lo+9}`, lo, hi:lo+9});
+  return bins;
+})();
+const BROAD_BINS = (()=>{
+  const bins=[{label:"<100", lo:-Infinity, hi:99}];
+  const edges=[100,150,200,250,300,350,400,450,500,550,600];
+  for(let i=0;i<edges.length-1;i++) bins.push({label:`${edges[i]}-${edges[i+1]}`, lo:edges[i], hi: i===edges.length-2?Infinity:edges[i+1]-1});
+  return bins;
+})();
+const BROAD_COLORS = BROAD_BINS.map((_,i)=>`hsl(${Math.round(i*(330/BROAD_BINS.length))},60%,55%)`);
+function binCounts(bins, weights){
+  const counts = bins.map(()=>0);
+  weights.forEach(w=>{
+    let idx = bins.findIndex(b=>w>=b.lo && w<=b.hi);
+    if(idx<0) idx = bins.length-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+function renderBinTable(el, bins, L, R){
+  const cL = binCounts(bins,L), cR = binCounts(bins,R);
+  const tL = L.length||1, tR = R.length||1;
+  let maxPct = 0;
+  cL.forEach((c,i)=>{ maxPct=Math.max(maxPct, c/tL*100, cR[i]/tR*100); });
+  maxPct = maxPct || 1;
+  let html = `<table><thead><tr><th>ช่วง (g)</th><th>ซ้าย n</th><th>ซ้าย %</th><th>ขวา n</th><th>ขวา %</th></tr></thead><tbody>`;
+  bins.forEach((b,i)=>{
+    const pL = (cL[i]/tL*100), pR=(cR[i]/tR*100);
+    html += `<tr><td>${b.label}</td><td>${cL[i]}</td>
+      <td><span class="bar"><i style="width:${(pL/maxPct*100).toFixed(0)}%"></i></span>${pL.toFixed(1)}%</td>
+      <td>${cR[i]}</td>
+      <td><span class="bar"><i style="width:${(pR/maxPct*100).toFixed(0)}%"></i></span>${pR.toFixed(1)}%</td></tr>`;
+  });
+  html += `</tbody></table>`;
+  el.innerHTML = html;
+}
+function renderDonut(el, weights){
+  const counts = binCounts(BROAD_BINS, weights);
+  const total = weights.length;
+  if(total===0){ el.innerHTML = '<div class="empty">ไม่มีข้อมูล</div>'; return; }
+  let cum = 0; const segs = [];
+  const legendRows = BROAD_BINS.map((b,i)=>{
+    const pct = counts[i]/total*100;
+    const start = cum; cum += pct*3.6;
+    if(pct>0) segs.push(`${BROAD_COLORS[i]} ${start}deg ${cum}deg`);
+    return `<div class="legend-item"><span class="legend-swatch" style="background:${BROAD_COLORS[i]}"></span>${b.label}g: ${pct.toFixed(1)}%</div>`;
+  }).join("");
+  el.innerHTML = `<div class="donut-wrap">
+    <div class="donut" style="background:conic-gradient(${segs.join(",")})"></div>
+    <div class="donut-legend">${legendRows}</div>
+  </div>`;
+}
+
+// ---- dashboard weight sliders ----
+function weightDomain(){
+  const ws = batches.map(b=>b.avgWeight).filter(v=>v!=null);
+  if(ws.length===0) return {min:0,max:5};
+  let min = Math.floor(Math.min(...ws)*10)/10;
+  let max = Math.ceil(Math.max(...ws)*10)/10;
+  if(max<=min) max = min+0.5;
+  return {min,max};
+}
+function initWeightSliders(){
+  const dom = weightDomain();
+  const fromEl = document.getElementById("d-from"), toEl = document.getElementById("d-to");
+  [fromEl,toEl].forEach(el=>{ el.min=dom.min; el.max=dom.max; el.step=0.05; });
+  if(filterFrom===null || filterFrom<dom.min) filterFrom = dom.min;
+  if(filterTo===null || filterTo>dom.max) filterTo = dom.max;
+  fromEl.value = filterFrom; toEl.value = filterTo;
+  updateSliderLabels();
+}
+function updateSliderLabels(){
+  document.getElementById("d-from-label").textContent = filterFrom.toFixed(2)+" kg";
+  document.getElementById("d-to-label").textContent = filterTo.toFixed(2)+" kg";
+}
+document.getElementById("d-from").addEventListener("input", (e)=>{
+  let v = parseFloat(e.target.value);
+  if(v>filterTo) v=filterTo;
+  filterFrom = v; e.target.value = v;
+  updateSliderLabels(); renderStats();
+});
+document.getElementById("d-to").addEventListener("input", (e)=>{
+  let v = parseFloat(e.target.value);
+  if(v<filterFrom) v=filterFrom;
+  filterTo = v; e.target.value = v;
+  updateSliderLabels(); renderStats();
+});
+document.getElementById("d-clear").onclick = ()=>{
+  filterFrom = null; filterTo = null;
+  initWeightSliders(); renderStats();
+};
+document.getElementById("d-refresh").onclick = ()=>{ if(isConfigured) fetchBatches(); };
+function isFullRange(){
+  const dom = weightDomain();
+  return filterFrom<=dom.min+1e-9 && filterTo>=dom.max-1e-9;
+}
+function filteredBatches(){
+  if(isFullRange()) return batches;
+  return batches.filter(b=> b.avgWeight!=null && b.avgWeight>=filterFrom && b.avgWeight<=filterTo);
+}
+function renderStats(){
+  const statusEl = document.getElementById("d-status");
+  const fb = filteredBatches();
+  statusEl.textContent = isFullRange()
+    ? `แสดงทุกชุดข้อมูล (${fb.length} ชุด)`
+    : `กรองช่วง ${filterFrom.toFixed(2)} ถึง ${filterTo.toFixed(2)} kg — พบ ${fb.length} ชุดข้อมูล`;
+  let allL=[], allR=[]; const byLoop = {};
+  fb.forEach(b=>{
+    for(const k in b.loops){
+      const entry = b.loops[k];
+      allL = allL.concat(entry.L); allR = allR.concat(entry.R);
+      byLoop[k] = byLoop[k] || {L:[],R:[]};
+      byLoop[k].L = byLoop[k].L.concat(entry.L);
+      byLoop[k].R = byLoop[k].R.concat(entry.R);
+    }
+  });
+  if(allL.length===0 && allR.length===0){
+    document.getElementById("combined-table").innerHTML = '<div class="empty">ไม่มีข้อมูลในช่วงที่เลือก</div>';
+    document.getElementById("donut-combined-L").innerHTML = "";
+    document.getElementById("donut-combined-R").innerHTML = "";
+    document.getElementById("loop-pills").innerHTML = "";
+    document.getElementById("loop-fine-table").innerHTML = "";
+    document.getElementById("donut-L").innerHTML = "";
+    document.getElementById("donut-R").innerHTML = "";
+    return;
+  }
+  renderBinTable(document.getElementById("combined-table"), FINE_BINS, allL, allR);
+  renderDonut(document.getElementById("donut-combined-L"), allL);
+  renderDonut(document.getElementById("donut-combined-R"), allR);
+
+  const loopKeys = Object.keys(byLoop).sort((a,b)=>a-b);
+  if(!loopKeys.includes(String(activeLoop))) activeLoop = loopKeys[0];
+  const pillWrap = document.getElementById("loop-pills");
+  pillWrap.innerHTML = "";
+  loopKeys.forEach(k=>{
+    const btn = document.createElement("button");
+    btn.textContent = "ลูป "+k;
+    if(String(activeLoop)===k) btn.classList.add("active");
+    btn.onclick = ()=>{ activeLoop = k; renderStats(); };
+    pillWrap.appendChild(btn);
+  });
+  const cur = byLoop[activeLoop] || {L:[],R:[]};
+  renderBinTable(document.getElementById("loop-fine-table"), FINE_BINS, cur.L, cur.R);
+  renderDonut(document.getElementById("donut-L"), cur.L);
+  renderDonut(document.getElementById("donut-R"), cur.R);
+}
+</script>
+</body>
+</html>
